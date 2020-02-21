@@ -1,5 +1,6 @@
 clear
 ls
+alias ls="ls -a"
 alias refresh="cd && cp -r storage/shared/termux/.bashrc ./"
 alias store="cd && cp -r ./.bashrc storage/shared/termux/.bashrc && cp -r ./.bashrc storage/shared/github/conf/"
 alias x="exit"
