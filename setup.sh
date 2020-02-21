@@ -11,14 +11,12 @@ termux-setup-storage
 
 git config --global user.name "nucld"
 git config --global user.email grimufa@gmail.com
-git config --global core.editor nano
 
-mkdir dev
-cd dev
-
-npm init -y
-git init
-
+# add remote rep
 git remote add origin git@github.com:nucld/nucld.github.io.git
-ssh-keygen -t rsa -b 4096 -C "grimufa@gmail.com" 
+
+# ssh setup
+ssh-keygen -t rsa
 ssh -T git@github.com
+
+# ssh-keygen -t rsa -b 4096 -C "grimufa@gmail.com" 
