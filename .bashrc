@@ -3,7 +3,7 @@ ls
 alias ls="ls -a"
 alias du="du -h"
 alias refresh="cd && cp -r storage/shared/github/conf/.bashrc ./"
-alias store="cd && cp -r ./.bashrc storage/shared/github/conf/"
+alias store="cd && cp -r ./.bashrc storage/shared/github/conf/ && g && cd conf && git add .bashrc -f && git commit -m 'config .bashrc update' && git push origin master"
 alias x="exit"
 alias sd="cd && cd storage/shared/"
 alias nano="nano -x"
