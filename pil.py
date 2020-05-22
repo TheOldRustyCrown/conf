@@ -1,27 +1,40 @@
-from PIL import Image
+from PIL import Image, ImageFilter
+from PIL.ImageFilter import (UnsharpMask)
 from PIL.ExifTags import TAGS
 import numpy as np
 import os
 
 res = 2048
-power = 1
+power = 0.5
 quality = 100
-ext = '.jpeg'
+ext = '.jpg'
 
 def start() :
   for file in os.listdir('src') :
     name, file_ext = os.path.splitext(file)
     img = Image.open(os.path.join('./src', file))
+    img=img.rotate(0)
     exif=img.info['exif']
     img = img.convert('RGB')
+    #img = img.filter(ImageFilter.SHARPEN)
+    #img = img.filter(UnsharpMask(radius=2, percent=150, threshold=3))
     img = img.convert('HSV')
     print(name+file_ext, img.size)
     H, S, V = img.split()
-    Norm = stretch_contrast(V)
-    img = Image.merge('HSV', (H, S, Norm))
+    V = stretch_contrast(V)
+    img = Image.merge('HSV', (H, S, V))
+
     img = img.convert('RGB')
+    R, G, B = img.split()
+    R = stretch_contrast(R)
+    G = stretch_contrast(G)
+    B = stretch_contrast(B)
+    img = Image.merge('RGB', (R, G, B))
+
+
     if img.height > res and img.width > res :
         img = resize(img)
+        print('resized to', res, quality, '%')
     img.save('./fx/{}'.format(name) + ext, exif=exif, quality=quality)
 
 def stretch_contrast (chanel) :
