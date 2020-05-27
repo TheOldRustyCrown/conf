@@ -1,12 +1,13 @@
-from PIL import Image, ImageFilter, ExifTags
+from PIL import Image, ImageFilter, ImageChops, ExifTags
 import numpy as np
 import os
 
-res = 3000
-gamma = 1.5
+res = 512
+gamma = 1.25
 power = 0.1
 quality = 100
 ext = '.jpg'
+
 
 def start() :
   for file in os.listdir('source') :
@@ -14,14 +15,15 @@ def start() :
     img = Image.open(os.path.join('./source', file))
     img = img.convert('RGB')
     console(img, name)
-    img = resize(img)
 
     img = gamma_correction(img)
     img = hsv_contrast(img)
-    #img = white_balance(img)
-    sharpen = img.filter(ImageFilter.SHARPEN)
-    emboss = img.filter(ImageFilter.EMBOSS)
-    img = Image.blend(img, emboss, .5)
+    img = white_balance(img)
+
+    #emboss = img.filter(ImageFilter.EMBOSS)
+    #img = ImageChops.overlay(img, emboss)
+
+    img = resize(img)
     save(img, name)
   return
 
@@ -29,7 +31,7 @@ def start() :
 def gamma_correction (img) :
   img = img.convert('HSV')
   H, S, V = img.split()
-  V = np.array(V, 'uint8')
+  V = np.array(V).astype(float)
   V = 255.0 * (V / 255.0)**(1 / gamma)
   V = Image.fromarray(np.uint8(V))
   img = Image.merge('HSV', (H, S, V))
@@ -61,8 +63,8 @@ def stretch_contrast (chanel) :
   Lt = 255 / (white - black)
   Dk = 255 * black / (black - white)
   print('Light :', round(Lt, 1), '/', 'Dark :', round(Dk, 1))
-  matrix = np.asarray(np.maximum(0, np.minimum(255 , chanel * Lt + Dk)).astype('uint8'), 'uint8')
-  return Image.fromarray(matrix)
+  matrix = np.asarray(np.maximum(0, np.minimum(255 , chanel * Lt + Dk))).astype(float)
+  return Image.fromarray(np.uint8(matrix))
 
 def console(img, name) :
   if img.height > res and img.width > res :
