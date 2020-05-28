@@ -2,7 +2,7 @@ from PIL import Image, ImageFilter, ImageChops, ExifTags
 import numpy as np
 import os
 
-res = 512
+res = 1024
 gamma = 1.25
 power = 0.1
 quality = 100
@@ -22,9 +22,10 @@ def start() :
 
     #emboss = img.filter(ImageFilter.EMBOSS)
     #img = ImageChops.overlay(img, emboss)
+    test = img.filter(ImageFilter.DETAIL)
 
     img = resize(img)
-    save(img, name)
+    save(test, name)
   return
 
 
