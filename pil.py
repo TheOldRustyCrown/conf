@@ -8,7 +8,6 @@ contrast = 0.1
 quality = 100
 ext = '.jpg'
 
-
 def start() :
   for file in os.listdir('source') :
     name, file_ext = os.path.splitext(file)
@@ -27,7 +26,6 @@ def start() :
     save(img, name)
 
   return
-
 
 def gamma_correction (img) :
   img = img.convert('HSV')
