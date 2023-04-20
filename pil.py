@@ -3,15 +3,15 @@ import numpy as np
 import os
 
 res = 6000
-gamma = 1.25
+gamma = 1.0
 contrast = 0.1
-quality = 100
+quality = 99
 ext = '.jpg'
 
 def start() :
-  for file in os.listdir('source') :
+  for file in os.listdir('input') :
     name, file_ext = os.path.splitext(file)
-    img = Image.open(os.path.join('./source', file)).convert('RGB')
+    img = Image.open(os.path.join('./input', file)).convert('RGB')
     console(img, name)
 
     img = img.convert('HSV')
@@ -51,9 +51,9 @@ def resize(img) :
 def save(img, name) :
   if 'exif' in img.info :
     exif=img.info['exif']
-    img.save('./fx/{}_fx'.format(name) + ext, exif=exif, quality=quality, subsampling=0)
+    img.save('./output/{}_fx'.format(name) + ext, exif=exif, quality=quality, subsampling=0)
   else :
-    img.save('./fx/{}_fx_noexif'.format(name) + ext, quality=quality, subsampling=0)
+    img.save('./output/{}_fx_noexif'.format(name) + ext, quality=quality, subsampling=0)
 
 start()
 
